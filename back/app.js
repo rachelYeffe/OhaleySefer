@@ -1,0 +1,22 @@
+const express = require('express');
+const app = express();
+const port = 2025;
+
+require('dotenv').config(); 
+app.use(express.json());
+
+const apartmentController = require('./Controllers/Apartment.controller.js');
+const customerController = require('./Controllers/Customer.controller.js');
+const mailController = require('./Controllers/Mail.controller.js');
+
+const cors = require('cors');
+app.use(cors({
+  origin: 'http://localhost:4200'
+}));
+app.use("/apartment", apartmentController);
+app.use("/customer", customerController);
+app.use("/mail", mailController);
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});

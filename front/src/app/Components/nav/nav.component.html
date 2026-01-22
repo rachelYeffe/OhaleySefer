@@ -1,0 +1,24 @@
+<nav class="nav-bar">
+ 
+
+  <div class="menu-toggle" (click)="toggleMenu()" id="mobile-menu">
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </div>
+
+  <ul class="nav-links" [class.active]="menuActive">
+    <li><a routerLink="/contact" class="contact">יצירת קשר</a></li>
+    <li><a routerLink="/about" class="about">אודות</a></li>
+    <li><a routerLink="/gallery" class="gallery">גלרייה</a></li>
+    <li><a routerLink="/experiences" class="experiences">חוויות</a></li>
+    <li><a routerLink="" class="home">דף הבית</a></li>
+
+  </ul>
+     <div class="logo">
+    <img src="/assets/logo.jpg" alt="logo" class="nav-logo" />
+  </div>
+</nav>
+<div class="hero-image">
+  <img src="assets/mivne.jpg" alt="Header Image">
+</div>
