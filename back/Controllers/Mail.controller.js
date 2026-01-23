@@ -7,6 +7,9 @@ router.post('/send', async (req, res) => {
   console.log('📨 POST /mail/send');
 
   try {
+    console.log('MAIL_USER:', process.env.MAIL_USER);
+console.log('MAIL_PASS exists:', !!process.env.MAIL_PASS);
+
     const { email } = req.body;
 
     if (!email) {
