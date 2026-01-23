@@ -1,3 +1,4 @@
+// mailRouter.js
 const express = require('express');
 const router = express.Router();
 const path = require('path');
@@ -7,9 +8,6 @@ router.post('/send', async (req, res) => {
   console.log('📨 POST /mail/send');
 
   try {
-    console.log('MAIL_USER:', process.env.MAIL_USER);
-console.log('MAIL_PASS exists:', !!process.env.MAIL_PASS);
-
     const { email } = req.body;
 
     if (!email) {
@@ -18,32 +16,29 @@ console.log('MAIL_PASS exists:', !!process.env.MAIL_PASS);
 
     console.log('➡️ Sending to:', email);
 
-    const filePath = path.join(
-      __dirname,
-      '..',
-      'Files',
-      'טופס רישום אורחות יושר תשפז+תקנון.pdf'
-    );
-
+    // נתיב לקובץ מצורף
+    const filePath = path.join(__dirname, '..', 'Files', 'טופס רישום אורחות יושר תשפז+תקנון.pdf');
     console.log('📎 File path:', filePath);
 
+    // יצירת Transporter
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
-      port: 587,
-      secure: true, // SSL
+      port: 465,
+      secure: true,
       auth: {
         user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS
+        pass: process.env.MAIL_PASS // App Password אם יש 2FA
       },
-      connectionTimeout: 10000, // מונע תקיעות
-      greetingTimeout: 10000,
-      socketTimeout: 10000
+      connectionTimeout: 30000,
+      greetingTimeout: 30000,
+      socketTimeout: 30000
     });
 
-    // בדיקת חיבור ל-SMTP (מאוד חשוב ל-Render)
+    // בדיקה אם החיבור ל-SMTP עובד
     await transporter.verify();
     console.log('✅ SMTP connected');
 
+    // שליחת המייל
     await transporter.sendMail({
       from: `"אהלי ספר" <${process.env.MAIL_USER}>`,
       to: email,
