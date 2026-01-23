@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 2025;
+const port = process.env.PORT || 2025;
 
 require('dotenv').config(); 
 app.use(express.json());
@@ -20,3 +20,5 @@ app.use("/mail", mailController);
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
+
