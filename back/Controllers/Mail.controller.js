@@ -14,16 +14,16 @@ router.post('/send', async (req, res) => {
       '../Files/טופס רישום אורחות יושר תשפז+תקנון.pdf'
     );
     console.log("Attachment path:", filePath);
-
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true, // חובה
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASS
-      },
-      debug: true,
-      logger: true
+      }
     });
+
 
     console.log("Transporter created, sending mail...");
 
@@ -54,7 +54,7 @@ router.post('/send', async (req, res) => {
     console.error("Error sending mail:", error);
     res.status(500).json({
       message: 'Failed to send mail',
-      error: error.toString()  
+      error: error.toString()
     });
   }
 });
