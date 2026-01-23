@@ -13,6 +13,9 @@ const mailController = require('./Controllers/Mail.controller.js');
 app.use(cors({
   origin: 'http://localhost:4200'
 }));
+app.get('/', (req, res) => {
+  res.send('Backend is running');
+});
 
 app.use("/apartment", apartmentController);
 app.use("/customer", customerController);
