@@ -29,7 +29,7 @@ console.log('MAIL_PASS exists:', !!process.env.MAIL_PASS);
 
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
-      port: 465,
+      port: 587,
       secure: true, // SSL
       auth: {
         user: process.env.MAIL_USER,
