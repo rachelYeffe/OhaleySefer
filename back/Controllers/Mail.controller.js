@@ -4,38 +4,52 @@ const path = require('path');
 const nodemailer = require('nodemailer');
 
 router.post('/send', async (req, res) => {
-  console.log("Received /mail/send request");
+  console.log('📨 POST /mail/send');
+
   try {
     const { email } = req.body;
-    console.log("Email received:", email);
+
+    if (!email) {
+      return res.status(400).json({ message: 'Email is required' });
+    }
+
+    console.log('➡️ Sending to:', email);
 
     const filePath = path.join(
       __dirname,
-      '../Files/טופס רישום אורחות יושר תשפז+תקנון.pdf'
+      '..',
+      'Files',
+      'טופס רישום אורחות יושר תשפז+תקנון.pdf'
     );
-    console.log("Attachment path:", filePath);
+
+    console.log('📎 File path:', filePath);
+
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 465,
-      secure: true, // חובה
+      secure: true, // SSL
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASS
-      }
+      },
+      connectionTimeout: 10000, // מונע תקיעות
+      greetingTimeout: 10000,
+      socketTimeout: 10000
     });
 
-
-    console.log("Transporter created, sending mail...");
+    // בדיקת חיבור ל-SMTP (מאוד חשוב ל-Render)
+    await transporter.verify();
+    console.log('✅ SMTP connected');
 
     await transporter.sendMail({
       from: `"אהלי ספר" <${process.env.MAIL_USER}>`,
       to: email,
       subject: 'טפסי רישום',
       html: `
-        <div style="text-align: right; direction: rtl; font-family: Arial, sans-serif;">
+        <div style="direction: rtl; text-align: right; font-family: Arial">
           <p>שלום,</p>
           <p>מצורפים טפסי רישום.</p>
-          <p>לאחר מילוי הטפסים, יש להחזירם לכתובת מייל זו.</p>
+          <p>לאחר מילוי הטפסים, יש להחזירם למייל זה.</p>
           <p>תודה רבה.</p>
         </div>
       `,
@@ -47,14 +61,14 @@ router.post('/send', async (req, res) => {
       ]
     });
 
-    console.log("Mail sent successfully!");
+    console.log('✅ Mail sent');
     res.status(200).json({ message: 'Mail sent successfully' });
 
   } catch (error) {
-    console.error("Error sending mail:", error);
+    console.error('❌ Mail error:', error);
     res.status(500).json({
       message: 'Failed to send mail',
-      error: error.toString()
+      error: error.message
     });
   }
 });
