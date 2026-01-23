@@ -47,13 +47,26 @@ router.post('/send', async (req, res) => {
     res.status(500).json({ message: 'Failed to send mail' });
   }
 });
-router.get('/test', (req, res) => {
-  console.log('MAIL_USER:', process.env.MAIL_USER);
-  console.log('MAIL_PASS:', process.env.MAIL_PASS);
-  console.log('ANY_OTHER_ENV:', process.env.ANY_OTHER_ENV);
+router.post('/send-test', (req, res) => {
+  try {
+    console.log('MAIL_USER:', process.env.MAIL_USER);
+    console.log('MAIL_PASS:', process.env.MAIL_PASS ? '****' : 'missing');
 
-  res.status(200).json({
-    message: 'Environment variables printed in server console. Check logs!',
-  });
+    const filePath = path.join(
+      __dirname,
+      '../Files/טופס רישום אורחות יושר תשפז+תקנון.pdf'
+    );
+    const fs = require('fs');
+    if (!fs.existsSync(filePath)) {
+      console.error('Attachment file not found:', filePath);
+      return res.status(500).json({ message: 'Attachment missing' });
+    }
+
+    res.status(200).json({ message: 'Env & file ok!' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Test failed' });
+  }
 });
+
 module.exports = router;
