@@ -1,40 +1,32 @@
-// mailRouter.js
 const express = require('express');
 const router = express.Router();
 const path = require('path');
 const nodemailer = require('nodemailer');
+const fs = require('fs');
 
 router.post('/send', async (req, res) => {
-  console.log('📨 POST /mail/send');
-
   try {
     const { email } = req.body;
-
-    if (!email) {
-      return res.status(400).json({ message: 'Email is required' });
-    }
-
-    console.log('➡️ Sending to:', email);
+    if (!email) return res.status(400).json({ message: 'Email is required' });
 
     // נתיב לקובץ מצורף
     const filePath = path.join(__dirname, '..', 'Files', 'טופס רישום אורחות יושר תשפז+תקנון.pdf');
-    console.log('📎 File path:', filePath);
+    const attachment = fs.readFileSync(filePath).toString('base64');
 
-    // יצירת Transporter
+    // יצירת transporter עם Gmail + App Password
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
+      port: 587,
+      secure: false,       // TLS במקום SSL
       auth: {
         user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS // App Password אם יש 2FA
+        pass: process.env.MAIL_PASS
       },
-      connectionTimeout: 30000,
-      greetingTimeout: 30000,
-      socketTimeout: 30000
+      requireTLS: true,
+      connectionTimeout: 30000
     });
 
-    // בדיקה אם החיבור ל-SMTP עובד
+    // בדיקה חיבור
     await transporter.verify();
     console.log('✅ SMTP connected');
 
@@ -53,8 +45,10 @@ router.post('/send', async (req, res) => {
       `,
       attachments: [
         {
+          content: attachment,
           filename: 'טופס רישום אורחות יושר תשפז + תקנון.pdf',
-          path: filePath
+          type: 'application/pdf',
+          disposition: 'attachment'
         }
       ]
     });
@@ -64,10 +58,7 @@ router.post('/send', async (req, res) => {
 
   } catch (error) {
     console.error('❌ Mail error:', error);
-    res.status(500).json({
-      message: 'Failed to send mail',
-      error: error.message
-    });
+    res.status(500).json({ message: 'Failed to send mail', error: error.message });
   }
 });
 
