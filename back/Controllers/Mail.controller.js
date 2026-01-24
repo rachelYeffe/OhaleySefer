@@ -11,14 +11,15 @@ router.post('/send', async (req, res) => {
       __dirname,
       '../Files/טופס רישום אורחות יושר תשפז+תקנון.pdf'
     );
-
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS
-      }
-    });
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false, // true עבור פורט 465, false עבור פורטים אחרים
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS
+  }
+});
 
     await transporter.sendMail({
       from: `" אהלי ספר" <${process.env.MAIL_USER}>`,
