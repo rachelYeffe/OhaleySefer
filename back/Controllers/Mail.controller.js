@@ -14,6 +14,8 @@ router.post('/send', async (req, res) => {
       return res.status(400).json({ message: 'Email is required' });
     }
 
+    console.log('📨 מנסה לשלוח למייל:', email);
+
     const filePath = path.join(
       __dirname,
       '..',
@@ -23,31 +25,39 @@ router.post('/send', async (req, res) => {
 
     const fileBuffer = fs.readFileSync(filePath);
 
-    await resend.emails.send({
-      from: `אהלי ספר <${process.env.MAIL_FROM}>`,
-      to: email,
-      subject: 'טפסי רישום',
-      html: `
-        <div style="direction: rtl; text-align: right;">
-          <p>שלום,</p>
-          <p>מצורפים טפסי רישום.</p>
-          <p>לאחר מילוי הטפסים, יש להחזירם למייל זה.</p>
-          <p>תודה רבה.</p>
-        </div>
-      `,
-      attachments: [
-        {
-          filename: 'טופס רישום.pdf',
-          content: fileBuffer
-        }
-      ]
-    });
+    // שליחה עם try/catch פנימי כדי ללכוד כל שגיאה
+    try {
+      const response = await resend.emails.send({
+        from: 'Ahalei Sefer <onboarding@resend.dev>',
+        to: email,
+        subject: 'טפסי רישום',
+        html: `
+          <div style="direction: rtl; text-align: right;">
+            <p>שלום,</p>
+            <p>מצורפים טפסי רישום.</p>
+            <p>לאחר מילוי הטפסים, יש להחזירם למייל זה.</p>
+            <p>תודה רבה.</p>
+          </div>
+        `,
+        attachments: [
+          {
+            filename: 'טופס רישום.pdf',
+            content: fileBuffer
+          }
+        ]
+      });
 
-    res.json({ message: 'Mail sent successfully' });
+      console.log('✅ מייל נשלח בהצלחה!', response);
+      res.json({ message: 'Mail sent successfully', response });
+
+    } catch (err) {
+      console.error('❌ שגיאה בשליחת המייל:', err);
+      res.status(500).json({ message: 'Mail failed', error: err.message });
+    }
 
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Mail failed', error: err.message });
+    console.error('❌ שגיאה בשרת:', err);
+    res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
 
