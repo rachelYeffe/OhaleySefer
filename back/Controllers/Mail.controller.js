@@ -1,41 +1,28 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-const nodemailer = require('nodemailer');
 const fs = require('fs');
+const sgMail = require('@sendgrid/mail');
+
+// 1️⃣ הגדרת API Key של SendGrid
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 router.post('/send', async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) return res.status(400).json({ message: 'Email is required' });
+
+  const filePath = path.join(__dirname, '../Files/טופס רישום אורחות יושר תשפז+תקנון.pdf');
+
+  if (!fs.existsSync(filePath)) {
+    return res.status(400).json({ message: 'File not found' });
+  }
+
   try {
-    const { email } = req.body; // המייל של הלקוח שביקש את הטפסים
-
-    const filePath = path.join(__dirname, '../Files/טופס רישום אורחות יושר תשפז+תקנון.pdf');
-
-    // 1. בדיקה שהקובץ קיים
-    if (!fs.existsSync(filePath)) {
-      console.error('File not found at:', filePath);
-      return res.status(400).json({ message: 'הקובץ לא נמצא בשרת' });
-    }
-
-    // 2. הגדרת הטרנספורטר עם הגדרות אבטחה מחמירות
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true, // שימוש ב-SSL
-      auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS
-      },
-      tls: {
-        // מונע בעיות חיבור בשרתי לינוקס
-        rejectUnauthorized: false
-      }
-    });
-
-    // 3. שליחת המייל
-    await transporter.sendMail({
-      from: `"אהלי ספר" <${process.env.MAIL_USER}>`,
-      to: email, // נשלח למי שביקש
+    const msg = {
+      to: email,
+      from: 'R0548431830@gmail.com', // חייב להיות ה-Sender המאומת ב-SendGrid
+      replyTo: 'R0548431830@gmail.com',
       subject: 'טפסי רישום',
       html: `
         <div style="text-align: right; direction: rtl; font-family: Arial, sans-serif;">
@@ -47,21 +34,21 @@ router.post('/send', async (req, res) => {
       `,
       attachments: [
         {
+          content: fs.readFileSync(filePath).toString('base64'),
           filename: 'טופס רישום - אהלי ספר.pdf',
-          path: filePath
+          type: 'application/pdf',
+          disposition: 'attachment'
         }
       ]
-    });
+    };
 
-    console.log(`Email sent successfully to: ${email}`);
+    await sgMail.send(msg);
+    console.log(`✅ Email sent to ${email}`);
     res.status(200).json({ message: 'Mail sent successfully' });
 
   } catch (error) {
-    console.error('Nodemailer Error:', error);
-    res.status(500).json({ 
-      message: 'Failed to send mail', 
-      details: error.message 
-    });
+    console.error('❌ SendGrid Error:', error);
+    res.status(500).json({ message: 'Failed to send mail', details: error.toString() });
   }
 });
 
