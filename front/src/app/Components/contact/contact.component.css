@@ -1,8 +1,8 @@
 .contact-wrapper {
-  width: 80%;           /* רוחב יחסי למסך */
-  max-width: 400px;     /* לא תתפשט יותר מדי על מסכים גדולים */
-  padding: 5%;          /* padding דינמי באחוזים */
-  border-radius: 6%;    /* ריבוע עם פינות מעוגלות */
+  width: 80%;          
+  max-width: 400px;     
+  padding: 5%;
+  border-radius: 6%;   
   background: #ffffff;
   box-shadow: 0 3% 8% rgba(0, 0, 0, 0.15);
 
@@ -11,13 +11,12 @@
   align-items: center;
   gap: 1em;
 
-  position: fixed;       /* תמיד במרכז המסך */
+  position: fixed;      
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-/* טופס */
 form {
   width: 100%;
   display: flex;
@@ -25,18 +24,16 @@ form {
   align-items: center;
 }
 
-/* אינפוט */
 input {
-  width: 90%;            /* אחוזים כדי להתאים לכל מסך */
+  width: 90%;            
   padding: 1em;
   border-radius: 1em;
   border: 1px solid #ccc;
   font-size: 1rem;
   text-align: center;
-  margin-bottom: 1em;   /* רווח ברור מהכפתור */
+  margin-bottom: 1em;  
 }
 
-/* כפתור */
 button {
   width: 70%;
   padding: 0.9em;
@@ -60,8 +57,12 @@ button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
+.contact-wrapper .note {
+  font-size: 1rem;
+  color: #666; 
+  margin-top: 8px;
+}
 
-/* --- MEDIA QUERIES למובייל --- */
 @media (max-width: 768px) {
   .contact-wrapper {
     width: 90%;
@@ -83,3 +84,5 @@ button:disabled {
     padding: 0.8em;
   }
 }
+
+

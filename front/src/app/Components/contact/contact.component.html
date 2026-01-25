@@ -3,7 +3,7 @@
 
   <p class="subtitle">
     לקבלת טפסי רישום השאר/י כתובת מייל
- </p>
+  </p>
 
   <form (ngSubmit)="sendMail()" novalidate>
     <input
@@ -18,6 +18,10 @@
       {{ loading ? 'שולח' : 'שליחה' }}
     </button>
   </form>
+
+  <p class="note" *ngIf="message && !isError">
+         אנא בדוק/י שהמייל לא הגיע לתיקיית ספאם
+  </p>
 
   <p class="message success" *ngIf="message && !isError">
     {{ message }}
