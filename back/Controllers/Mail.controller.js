@@ -4,16 +4,13 @@ const path = require('path');
 const fs = require('fs');
 const sgMail = require('@sendgrid/mail');
 
-// 1️⃣ הגדרת API Key של SendGrid
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 router.post('/send', async (req, res) => {
   const { email } = req.body;
-
   if (!email) return res.status(400).json({ message: 'Email is required' });
 
   const filePath = path.join(__dirname, '../Files/טופס רישום אורחות יושר תשפז+תקנון.pdf');
-
   if (!fs.existsSync(filePath)) {
     return res.status(400).json({ message: 'File not found' });
   }
@@ -21,15 +18,20 @@ router.post('/send', async (req, res) => {
   try {
     const msg = {
       to: email,
-      from: 'R0548431830@gmail.com', // חייב להיות ה-Sender המאומת ב-SendGrid
-      replyTo: 'R0548431830@gmail.com',
-      subject: 'טפסי רישום',
+      from: {
+        email: process.env.MAIL_FROM,
+        name: 'אהלי ספר'
+      },
+      replyTo: process.env.MAIL_FROM,
+      subject: 'טפסי רישום – אהלי ספר',
       html: `
-        <div style="text-align: right; direction: rtl; font-family: Arial, sans-serif;">
+        <div style="direction: rtl; text-align: right; font-family: Arial;">
           <p>שלום,</p>
           <p>מצורפים טפסי רישום.</p>
-          <p>לאחר מילוי הטפסים, יש להחזירם לכתובת מייל זו.</p>
-          <p>תודה רבה.</p>
+          <p>לאחר מילוי הטפסים, ניתן להשיב למייל זה.</p>
+          <p>תודה רבה,</p>
+          <strong>אהלי ספר</strong><br/>
+          <small>שדרות יחזקאל 7, מודיעין עילית</small>
         </div>
       `,
       attachments: [
@@ -43,12 +45,11 @@ router.post('/send', async (req, res) => {
     };
 
     await sgMail.send(msg);
-    console.log(`✅ Email sent to ${email}`);
-    res.status(200).json({ message: 'Mail sent successfully' });
+    res.json({ message: 'Mail sent successfully' });
 
-  } catch (error) {
-    console.error('❌ SendGrid Error:', error);
-    res.status(500).json({ message: 'Failed to send mail', details: error.toString() });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Send failed' });
   }
 });
 
