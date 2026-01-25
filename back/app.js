@@ -11,7 +11,10 @@ const customerController = require('./Controllers/Customer.controller.js');
 const mailController = require('./Controllers/Mail.controller.js');
 
 app.use(cors({
-  origin: 'http://localhost:4200'
+  origin: [
+    'http://localhost:4200', 
+    'https://ohaleysefer-front.onrender.com' 
+  ]
 }));
 app.get('/', (req, res) => {
   res.send('Backend is running');
