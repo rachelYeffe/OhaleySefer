@@ -1,33 +1,65 @@
-<div class="contact-wrapper">
-  <h2>צור קשר</h2>
+<div class="contact-page">
+  <section class="contact-section">
+    <div class="container">
+      <h1>יצירת קשר</h1>
+      
+      <div class="contact-content">
+        <div class="contact-info-box">
+          <h2>פרטי התקשרות</h2>
+          <p>אנא אל תהסוסו ליצור איתנו קשר. אנו כאן בשביל לשמוע ממכם!</p>
+          
+          <div class="contact-methods">
+            <div class="method">
+              <span class="icon">📧</span>
+              <h3>דוא"ל</h3>
+              <a href="mailto:ohaleyseferweb1@gmail.com">ohaleyseferweb1&#64;gmail.com</a>
+            </div>
+            
+            <div class="method">
+              <span class="icon">📱</span>
+              <h3>טלפון</h3>
+              <a href="tel:089740799">089740799</a>
+            </div>
 
-  <p class="subtitle">
-    לקבלת טפסי רישום השאר/י כתובת מייל
-  </p>
+            <div class="method">
+              <span class="icon">📍</span>
+              <h3>מיקום</h3>
+              <p>מודיעין עילית</p>
+            </div>
+          </div>
+        </div>
 
-  <form (ngSubmit)="sendMail()" novalidate>
-    <input
-      type="email"
-      name="email"
-      [(ngModel)]="email"
-      placeholder="כתובת מייל"
-      required
-    />
+        <div class="registration-form-box">
+          <h2>בקשו טפסי רישום</h2>
+          <p>הזינו את כתובת המייל שלכם ונישלח לכם את טפסי הרישום</p>
+          
+          <form (ngSubmit)="sendMail()" novalidate>
+            <input
+              type="email"
+              name="email"
+              [(ngModel)]="email"
+              placeholder="כתובת מייל"
+              required
+            />
 
-    <button type="submit" [disabled]="loading">
-      {{ loading ? 'שולח' : 'שליחה' }}
-    </button>
-  </form>
+            <button type="submit" [disabled]="loading">
+              {{ loading ? 'שולח...' : 'בקש טפסים' }}
+            </button>
+          </form>
 
-  <p class="note" *ngIf="message && !isError">
-         אנא בדוק/י שהמייל לא הגיע לתיקיית ספאם
-  </p>
+          <p class="note" *ngIf="message && !isError">
+            אנא בדוק/י שהמייל לא הגיע לתיקיית ספאם
+          </p>
 
-  <p class="message success" *ngIf="message && !isError">
-    {{ message }}
-  </p>
+          <p class="message success" *ngIf="message && !isError">
+            {{ message }}
+          </p>
 
-  <p class="message error" *ngIf="message && isError">
-    {{ message }}
-  </p>
+          <p class="message error" *ngIf="message && isError">
+            {{ message }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
