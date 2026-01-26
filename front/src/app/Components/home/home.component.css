@@ -1,14 +1,4 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
-body, html {
-  direction: rtl;
-  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
-  overflow-x: hidden;
-}
 
 .container {
   max-width: 1200px;
@@ -16,7 +6,6 @@ body, html {
   padding: 0 20px;
 }
 
-/* ==================== Hero Section ==================== */
 .hero {
   height: 100vh;
   display: flex;
@@ -26,9 +15,8 @@ body, html {
   text-align: center;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
-  padding-top: 0;
-  margin-top: 0;
+  background: linear-gradient(135deg, #97ffdc 0%, #8eeeff 100%);
+
 }
 
 .hero-background {
@@ -78,8 +66,8 @@ body, html {
 .cta-button {
   display: inline-block;
   padding: 15px 40px;
-  background-color: #ff6b6b;
-  color: white;
+  background-color: #ffffff;
+  color: rgb(97, 226, 246);
   text-decoration: none;
   border-radius: 50px;
   font-size: 18px;
@@ -94,9 +82,10 @@ body, html {
 }
 
 .cta-button:hover {
-  background-color: #ff5252;
+  background-color: #6df1be;
+  color: #ffffff;
   transform: translateY(-3px);
-  box-shadow: 0 15px 40px rgba(255, 107, 107, 0.5);
+  box-shadow: 0 15px 40px rgba(56, 255, 162, 0.5);
 }
 
 .scroll-indicator {
@@ -130,7 +119,6 @@ body, html {
   animation: scrollDot 2s infinite;
 }
 
-/* ==================== About Section ==================== */
 .about {
   padding: 100px 0;
   background-color: #f8f9fa;
@@ -155,7 +143,7 @@ body, html {
   transform: translateX(-50%);
   width: 100px;
   height: 5px;
-  background: linear-gradient(90deg, #10B981, #06B6D4);
+  background: linear-gradient(135deg, #97ffdc 0%, #8eeeff 100%);
   border-radius: 5px;
 }
 
@@ -198,7 +186,6 @@ body, html {
   color: #666;
 }
 
-/* ==================== Features Section ==================== */
 .features {
   padding: 100px 0;
   background-color: #ffffff;
@@ -227,7 +214,7 @@ body, html {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
+  background: linear-gradient(135deg, #97ffdc 0%, #8eeeff 100%);
   opacity: 0;
   transition: top 0.3s ease;
   z-index: -1;
@@ -262,7 +249,6 @@ body, html {
   color: #666;
 }
 
-/* ==================== Values Section ==================== */
 .values {
   padding: 100px 0;
   background: linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
@@ -285,10 +271,10 @@ body, html {
 }
 
 .value-card {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(45, 239, 177, 0.1);
   padding: 40px;
   border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(41, 225, 188, 0.2);
   text-align: center;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
@@ -309,7 +295,6 @@ body, html {
   line-height: 1.6;
 }
 
-/* ==================== Statistics Section ==================== */
 .statistics {
   padding: 100px 0;
   background-color: #f8f9fa;
@@ -352,7 +337,6 @@ body, html {
   font-weight: 500;
 }
 
-/* ==================== CTA Section ==================== */
 .cta-section {
   padding: 100px 0;
   background: linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
@@ -381,7 +365,7 @@ body, html {
   padding: 25px;
   border-radius: 15px;
   backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(32, 203, 250, 0.3);
 }
 
 .detail-item {
@@ -416,30 +400,29 @@ body, html {
 }
 
 .btn-primary {
-  background-color: #FF6B9D;
-  color: white;
-  box-shadow: 0 10px 30px rgba(255, 107, 157, 0.3);
+  background-color: #ffffff;
+  color: rgb(52, 232, 226);
+  box-shadow: 0 10px 30px rgba(29, 175, 124, 0.3);
 }
 
 .btn-primary:hover {
-  background-color: #FF5489;
+  background-color: #ffffff;
   transform: translateY(-3px);
-  box-shadow: 0 15px 40px rgba(255, 107, 107, 0.5);
+  box-shadow: 0 15px 40px rgba(255, 255, 255, 0.5);
 }
 
 .btn-secondary {
-  background-color: transparent;
-  color: white;
-  border: 2px solid white;
+  background-color: #ffffff;
+  color: rgb(52, 232, 226);
+  box-shadow: 0 10px 30px rgba(29, 175, 124, 0.3);
 }
 
 .btn-secondary:hover {
-  background-color: white;
-  color: #667eea;
+  background-color: #ffffff;
   transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(255, 255, 255, 0.5);
 }
 
-/* ==================== Animations ==================== */
 @keyframes fadeSlideIn {
   from {
     opacity: 0;
